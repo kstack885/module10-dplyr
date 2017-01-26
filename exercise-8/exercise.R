@@ -42,12 +42,26 @@ worst.education <- filter(best.mortality, Education == min(Education)) %>%
   select(Region, Education, Infant.Mortality)
 print(worst.education)
 write.csv(worst.education, file = "data/WorstEducation.csv")
+
+# education of top 5 best mortality rates, df of top 5
+
+ed.of.top.mort <- arrange(best.mortality, -Infant.Mortality) %>% 
+   head(5)
+   
+print(ed.of.top.mort)
 # Create a function that can take in two different region names and compare them based on a statistic
 # Of your choice (education, Examination, ect.)  print out a statment describing which one is greater
 # and return a data frame that holds the selected region and the compared variable.  If your feeling adventurous
 # also have your function write to a csv file.
-CompareRegions <- function(region.1, region.2) {
-  
-  
-  
+CompareCatholics <- function(region.1, region.2) {
+  # Which is more Catholic
+  # select --> select(swiss, Region, Catholic)
+  comparing <- select(swiss, Region, Catholic) %>% 
+    filter(Region == region.1 | Region == region.2) %>% 
+    filter(max(Catholic) == Catholic)
+  write.csv(comparing, file = "data/CompareCatholics.csv")
+  print(paste(select(comparing, Region), "has a greater proportion of Catholics."))
+  return(comparing)
+      
 }
+CompareCatholics("Sarine", "Broye")
